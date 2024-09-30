@@ -6,6 +6,7 @@ RUN adduser -h /var/amavis -s /bin/false -D -u 3334 amavis
 
 RUN apk --no-cache add amavis spamassassin perl-mail-spf p7zip cabextract tzdata \
     file altermime xz lrzip lz4 perl-dbd-mysql perl-dbd-pg && \
+    sed -i -r -e '/^use Amavis::Conf/,/^$/{/^$/{ i\' -e 'use Amavis::IO::Zlib;' -e '}}' /usr/share/perl5/vendor_perl/Amavis/Out/Local.pm && \
     sa-update -v && \
     chown -R amavis:amavis /etc/mail/spamassassin /var/lib/spamassassin
 
